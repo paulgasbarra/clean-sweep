@@ -2,13 +2,22 @@
 import { useEffect, useState } from "react";
 import { getUserData } from "../api/users";
 
+interface User {
+  name: string;
+  metrics: {
+    sites_posted: number;
+  };
+}
+
 export default function ProfilePage() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const data = await getUserData("user_123"); // Replace with actual user ID
-      setUser(data);
+      const data = await getUserData("PX2uAC6IifKlafPayErA"); // Replace with actual user ID
+      if (data) {
+        setUser(data as User);
+      }
     };
     fetchUser();
   }, []);
