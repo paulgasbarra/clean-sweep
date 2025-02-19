@@ -18,7 +18,7 @@ export default function Dashboard() {
     const fetchSites = async () => {
       const data = await getOpenSites();
       if (data) {
-          setSites(data)
+          setSites(data as SiteData[]);
       }
     };
     fetchSites();
