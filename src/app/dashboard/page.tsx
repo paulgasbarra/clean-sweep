@@ -31,7 +31,7 @@ export default function Dashboard() {
     return () => unsubscribe();
   }, [router]);
 
-  if (!user) return <p>Loading...</p>;
+
 
   useEffect(() => {
     const fetchSites = async () => {
@@ -43,6 +43,8 @@ export default function Dashboard() {
     fetchSites();
   }, []);
 
+  if (!user) return <p>Loading...</p>;
+  
   return (
     <div>
       <h1>Waste Cleanup Dashboard</h1>
