@@ -22,7 +22,7 @@ interface SiteData {
 }
 
 // Convert Firestore timestamp to regular date
-const convertTimestamps = (doc: any) => {
+const convertTimestamps = (doc: { id: string; data: () => Record<string, unknown> }) => {
   const data = doc.data();
   return {
     id: doc.id,
