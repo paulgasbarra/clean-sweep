@@ -65,7 +65,7 @@ export default function Dashboard() {
                   Status: <span className="capitalize">{site.status}</span>
                 </p>
                 <p className="text-sm text-gray-600">
-                  Location: {site.location.lat.toFixed(4)}, {site.location.long.toFixed(4)}
+                  Location: {site.location?.lat?.toFixed(4) || 'N/A'}, {site.location?.long?.toFixed(4) || 'N/A'}
                 </p>
                 <p className="text-sm text-gray-600">
                   Reported: {new Date(site.created_at).toLocaleDateString()}
