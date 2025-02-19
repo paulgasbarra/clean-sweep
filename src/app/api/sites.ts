@@ -1,6 +1,6 @@
 
 "use server";
-import { collection, getDocs, query, where, addDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, addDoc, doc, updateDoc, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import { db } from "../lib/firebaseConfig";
 
 // Define an interface for site data
@@ -41,8 +41,8 @@ interface FirestoreData {
 }
 
 // Convert Firestore timestamp to regular date
-const convertTimestamps = (doc: { id: string; data: () => FirestoreData }) => {
-  const data = doc.data();
+const convertTimestamps = (doc: QueryDocumentSnapshot<DocumentData>) => {
+  const data = doc.data() as FirestoreData;
   return {
     id: doc.id,
     ...data,
