@@ -3,3 +3,30 @@
     "singleProjectMode": true
   }
 }
+{
+  "firestore": {
+    "rules": {
+      "rules_version": '2',
+      "service": "cloud.firestore",
+      "match /databases/{database}/documents": {
+        "match /sites/{siteId}": {
+          "allow read: if true;
+          allow create: if request.auth != null;
+          allow update, delete: if request.auth != null && request.auth.uid == resource.data.reported_by;
+        }
+      }
+    }
+  },
+  "storage": {
+    "rules": {
+      "rules_version": '2',
+      "service": "firebase.storage",
+      "match /b/{bucket}/o": {
+        "match /sites/{userId}/{allPaths=**}": {
+          "allow read: if true;
+          allow write: if request.auth != null && request.auth.uid == userId;
+        }
+      }
+    }
+  }
+}
