@@ -2,15 +2,23 @@
 import { useEffect, useState } from "react";
 import { getOpenSites } from "../api/sites";
 
+interface SiteData {
+    id: string;
+    description: string;
+    status: "open" | "in progress" | "cleaned";
+    reported_by: string;
+    created_at: Date;
+}
+
+
 export default function Dashboard() {
-  const [sites, setSites] = useState([]);
+  const [sites, setSites] = useState<SiteData[]>([]);
 
   useEffect(() => {
     const fetchSites = async () => {
       const data = await getOpenSites();
       if (data) {
-          setSites(data);
-
+          setSites(data)
       }
     };
     fetchSites();

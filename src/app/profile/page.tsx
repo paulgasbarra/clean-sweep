@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getUserData } from "../api/users";
 
 export default function ProfilePage() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -17,7 +17,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <h1>{user.name}'s Profile</h1>
+      <h1>{`${user.name}'s Profile`}</h1>
       <p>Sites Posted: {user.metrics.sites_posted}</p>
     </div>
   );
