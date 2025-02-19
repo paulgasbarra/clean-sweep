@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getOpenSites } from "../api/sites";
+import { useRouter } from "next/navigation";
+import { auth } from "../lib/firebaseConfig";
+import { User } from "firebase/auth";
 
 interface SiteData {
     id: string;
@@ -12,7 +15,23 @@ interface SiteData {
 
 
 export default function Dashboard() {
+  const router = useRouter();
   const [sites, setSites] = useState<SiteData[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (!authUser) {
+        router.push("/auth"); // Redirect to login if not authenticated
+      } else {
+        setUser(authUser);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
+  if (!user) return <p>Loading...</p>;
 
   useEffect(() => {
     const fetchSites = async () => {
