@@ -21,8 +21,16 @@ interface SiteData {
     };
 }
 
+import { Timestamp } from 'firebase/firestore';
+
+interface FirestoreData {
+  created_at: Timestamp;
+  updated_at?: Timestamp;
+  [key: string]: any;
+}
+
 // Convert Firestore timestamp to regular date
-const convertTimestamps = (doc: { id: string; data: () => Record<string, unknown> }) => {
+const convertTimestamps = (doc: { id: string; data: () => FirestoreData }) => {
   const data = doc.data();
   return {
     id: doc.id,
