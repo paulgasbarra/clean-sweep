@@ -4,7 +4,6 @@ import { db } from "../lib/firebaseConfig";
 
 // Define an interface for site data
 interface SiteData {
-    id: string;
     description: string;
     status: "open" | "in-progress" | "cleaned";
     reported_by: string;
