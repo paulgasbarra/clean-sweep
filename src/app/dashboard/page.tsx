@@ -71,9 +71,9 @@ export default function Dashboard() {
                   Reported: {new Date(site.created_at).toLocaleDateString()}
                 </p>
               </div>
-              {site.image_urls.before && (
+              {site.image_urls?.before?.[0] && (
                 <img
-                  src={site.image_urls.before}
+                  src={site.image_urls.before[0]}
                   alt="Site"
                   className="w-24 h-24 object-cover rounded"
                 />
