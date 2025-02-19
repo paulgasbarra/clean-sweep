@@ -26,7 +26,18 @@ import { Timestamp } from 'firebase/firestore';
 interface FirestoreData {
   created_at: Timestamp;
   updated_at?: Timestamp;
-  [key: string]: any;
+  description: string;
+  status: "open" | "in-progress" | "cleaned";
+  reported_by: string;
+  location: {
+    lat: number;
+    long: number;
+  };
+  image_urls: {
+    before: string[];
+    during: string[];
+    after: string[];
+  };
 }
 
 // Convert Firestore timestamp to regular date
