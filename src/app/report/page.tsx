@@ -1,9 +1,9 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
 import { reportNewSite } from "../api/sites";
-import { auth } from "../lib/firebaseConfig";
+import { auth, storage } from "../lib/firebaseConfig"; // Assuming storage is exported from firebaseConfig
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useRouter } from "next/navigation";
 
 export default function ReportSite() {
@@ -43,7 +43,7 @@ export default function ReportSite() {
         )}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
       );
       const data = await response.json();
-      
+
       if (data.results && data.results[0]) {
         const { lat, lng } = data.results[0].geometry.location;
         setLocation({ lat: lat.toString(), long: lng.toString() });
@@ -77,6 +77,13 @@ export default function ReportSite() {
           throw new Error("Failed to geocode address");
         }
       }
+      let beforeImageUrl = '';
+      if (beforeImage) {
+        const storageRef = ref(storage, `sites/${auth.currentUser.uid}/${new Date().getTime()}-${beforeImage.name}`);
+        const uploadTask = await uploadBytes(storageRef, beforeImage);
+        beforeImageUrl = await getDownloadURL(uploadTask.ref);
+      }
+
       await reportNewSite({
         description,
         location: {
@@ -87,7 +94,7 @@ export default function ReportSite() {
         reported_by: auth.currentUser.uid,
         created_at: new Date(),
         image_urls: {
-          before: beforeImage ? [beforeImage] : [],
+          before: beforeImageUrl ? [beforeImageUrl] : [],
           during: [],
           after: []
         }
