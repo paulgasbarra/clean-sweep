@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { reportNewSite } from "../api/sites";
-import { auth, storage } from "../lib/firebaseConfig"; // Assuming storage is exported from firebaseConfig
+import { auth, storage } from "../lib/firebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function ReportSite() {
   const router = useRouter();
@@ -99,9 +100,11 @@ export default function ReportSite() {
           after: []
         }
       });
+      toast.success('Report submitted successfully!');
       router.push("/dashboard");
     } catch (error) {
       console.error("Error reporting site:", error);
+      toast.error('Error submitting report. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -109,6 +112,7 @@ export default function ReportSite() {
 
   return (
     <div className="max-w-2xl mx-auto p-6">
+      <Toaster /> {/* Added Toaster component */}
       <h1 className="text-2xl font-bold mb-6">Report a Waste Site</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
