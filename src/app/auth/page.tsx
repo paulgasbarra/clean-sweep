@@ -1,7 +1,19 @@
 "use client";
 import { useState } from "react";
-import { loginWithGoogle, loginWithEmail, registerWithEmail, logout } from "../lib/auth";
+import {
+  loginWithGoogle,
+  loginWithEmail,
+  registerWithEmail,
+  logout,
+} from "../lib/auth";
 import { useRouter } from "next/navigation";
+
+const styles = {
+  container: {
+    color: "pink",
+    flex: "column",
+  },
+};
 
 export default function AuthPage() {
   const router = useRouter();
@@ -24,9 +36,9 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <h1 className="text-2xl font-bold">Sign In</h1>
-      <button onClick={handleGoogleLogin} className="bg-blue-500 text-white p-2 rounded">
+    <div style={styles.container}>
+      <h1 className="">Sign In</h1>
+      <button onClick={handleGoogleLogin} className="">
         Sign in with Google
       </button>
 
@@ -44,14 +56,14 @@ export default function AuthPage() {
         onChange={(e) => setPassword(e.target.value)}
         className="border p-2 rounded"
       />
-      <button onClick={handleEmailLogin} className="bg-green-500 text-white p-2 rounded">
+      <button onClick={handleEmailLogin} className="">
         Sign in with Email
       </button>
-      <button onClick={handleEmailRegister} className="bg-yellow-500 text-white p-2 rounded">
+      <button onClick={handleEmailRegister} className="">
         Register with Email
       </button>
 
-      <button onClick={logout} className="bg-red-500 text-white p-2 rounded">
+      <button onClick={logout} className="">
         Logout
       </button>
     </div>
