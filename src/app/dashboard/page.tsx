@@ -1,4 +1,3 @@
-
 "use client";
 import { useEffect, useState } from "react";
 import { getOpenSites } from "../api/sites";
@@ -51,7 +50,7 @@ export default function Dashboard() {
   }, []);
 
   if (!user) return <p>Loading...</p>;
-  
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Waste Sites Dashboard</h1>
@@ -65,16 +64,17 @@ export default function Dashboard() {
                   Status: <span className="capitalize">{site.status}</span>
                 </p>
                 <p className="text-sm text-gray-600">
-                  Location: {site.location?.lat?.toFixed(4) || 'N/A'}, {site.location?.long?.toFixed(4) || 'N/A'}
+                  Location: {site.location?.lat?.toFixed(4) || "N/A"},{" "}
+                  {site.location?.long?.toFixed(4) || "N/A"}
                 </p>
                 <p className="text-sm text-gray-600">
                   Reported: {new Date(site.created_at).toLocaleDateString()}
                 </p>
               </div>
-              {site.image_urls.before[0] && (
-                <img 
-                  src={site.image_urls.before[0]} 
-                  alt="Site" 
+              {site.image_urls.before && (
+                <img
+                  src={site.image_urls.before}
+                  alt="Site"
                   className="w-24 h-24 object-cover rounded"
                 />
               )}
