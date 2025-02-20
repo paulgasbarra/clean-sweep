@@ -48,7 +48,6 @@ const convertTimestamps = (doc: QueryDocumentSnapshot<DocumentData>) => {
     id: doc.id,
     ...data,
     created_at: data.created_at?.toDate(),
-    updated_at: data.updated_at?.toDate(),
   };
 };
 

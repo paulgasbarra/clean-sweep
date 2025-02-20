@@ -5,14 +5,14 @@ import { fetchRecentLitterReports } from "../api/nyc311";
 import { useRouter } from "next/navigation";
 import { auth } from "../lib/firebaseConfig";
 import { User } from "firebase/auth";
+import { Timestamp } from "firebase/firestore";
 
 interface SiteData {
   id: string;
   description: string;
-  status: "open" | "in-progress" | "cleaned";
+  status: string;
   reported_by: string;
   created_at: Date;
-  updated_at?: Date;
   location: {
     lat: number;
     long: number;
@@ -45,13 +45,15 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchSites = async () => {
       const data = await getOpenSites();
-      const threeOneOneData = (await fetchRecentLitterReports()).map(report => ({
-        ...report,
-        updated_at: report.updated_at || new Date(report.created_at)
+      const threeOneOneData = (await fetchRecentLitterReports());
+      const combinedData = [...data, ...threeOneOneData].map((site) => ({
+        ...site,
+        created_at: site.created_at instanceof Timestamp ? site.created_at.toDate() : site.created_at,
       }));
-      const sites = data.concat(threeOneOneData);
+
+    
       if (data && threeOneOneData) {
-        setSites([...data, ...threeOneOneData]);
+        setSites(combinedData);
       }
     };
     fetchSites();
@@ -65,7 +67,7 @@ export default function Dashboard() {
       <h1 className="text-2xl font-bold mb-6">Waste Sites Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sites.map((site) => (
-          <div key={site.id} className="px-8 border rounded-lg px-4 shadow-sm">
+          <div key={site.id} className="px-8 border rounded-lg shadow-sm">
             <div className="flex justify-between items-start">
               <div>
                 <p className="font-medium mb-2">{site.description}</p>
