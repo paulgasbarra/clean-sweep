@@ -2,6 +2,7 @@
 "use server";
 import { collection, getDocs, query, where, addDoc, doc, updateDoc, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import { db } from "../lib/firebaseConfig";
+import { fetchRecentLitterReports } from "./nyc311";
 
 // Define an interface for site data
 interface SiteData {
@@ -53,10 +54,13 @@ const convertTimestamps = (doc: QueryDocumentSnapshot<DocumentData>) => {
 
 // Fetch all open waste sites
 export async function getOpenSites() {
+fetchRecentLitterReports();
   const q = query(collection(db, "Sites"), where("status", "==", "open"));
   const siteDocs = await getDocs(q);
   return siteDocs.docs.map(convertTimestamps);
 }
+
+
 
 // Report a new waste site with type enforcement
 export async function reportNewSite(siteData: SiteData) {

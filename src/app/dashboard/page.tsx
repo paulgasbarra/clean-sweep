@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getOpenSites } from "../api/sites";
+import { fetchRecentLitterReports } from "../api/nyc311";
 import { useRouter } from "next/navigation";
 import { auth } from "../lib/firebaseConfig";
 import { User } from "firebase/auth";
@@ -11,6 +12,7 @@ interface SiteData {
   status: "open" | "in-progress" | "cleaned";
   reported_by: string;
   created_at: Date;
+  updated_at?: Date;
   location: {
     lat: number;
     long: number;
@@ -26,6 +28,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [sites, setSites] = useState<SiteData[]>([]);
   const [user, setUser] = useState<User | null>(null);
+  const [reports_311, setReports_311] = useState<SiteData[]>([]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -42,12 +45,18 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchSites = async () => {
       const data = await getOpenSites();
-      if (data) {
-        setSites(data as SiteData[]);
+      const threeOneOneData = (await fetchRecentLitterReports()).map(report => ({
+        ...report,
+        updated_at: report.updated_at || new Date(report.created_at)
+      }));
+      const sites = data.concat(threeOneOneData);
+      if (data && threeOneOneData) {
+        setSites([...data, ...threeOneOneData]);
       }
     };
     fetchSites();
   }, []);
+
 
   if (!user) return <p>Loading...</p>;
 
@@ -56,7 +65,7 @@ export default function Dashboard() {
       <h1 className="text-2xl font-bold mb-6">Waste Sites Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sites.map((site) => (
-          <div key={site.id} className="border rounded-lg p-4 shadow-sm">
+          <div key={site.id} className="px-8 border rounded-lg px-4 shadow-sm">
             <div className="flex justify-between items-start">
               <div>
                 <p className="font-medium mb-2">{site.description}</p>

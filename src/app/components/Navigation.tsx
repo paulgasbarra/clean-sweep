@@ -26,9 +26,9 @@ export default function Navigation() {
         <Link href="/" className="text-xl font-bold">
           Clean Sweep
         </Link>
-        <div className="space-x-4">
+        <div className="space-x-4 gap-x-8">
           {isLoggedIn ? (
-            <>
+            <div className="flex items-center gap-4">
               <Link 
                 href="/report" 
                 className={`hover:text-blue-200 ${isActive('/report') ? 'text-blue-200' : ''}`}
@@ -53,7 +53,7 @@ export default function Navigation() {
               >
                 Logout
               </button>
-            </>
+            </div>
           ) : (
             <Link 
               href="/auth" 
