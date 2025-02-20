@@ -28,7 +28,6 @@ export default function Dashboard() {
   const router = useRouter();
   const [sites, setSites] = useState<SiteData[]>([]);
   const [user, setUser] = useState<User | null>(null);
-  const [reports_311, setReports_311] = useState<SiteData[]>([]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {

@@ -1,7 +1,4 @@
 
-import { db } from '../lib/firebaseConfig';
-import { collection, addDoc, query, where, getDocs, Timestamp } from 'firebase/firestore';
-
 const NYC_311_API = 'https://data.cityofnewyork.us/resource/erm2-nwe9.json';
 
 interface NYC311Report {
